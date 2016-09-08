@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+			http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task-4.3.xsd
+			http://www.springframework.org/schema/aop
+			http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		<property name="locations">
+			<list>
+				<value>classpath:core.properties</value>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>  
+	</bean>
+
+	<aop:aspectj-autoproxy />
+	<context:annotation-config />
+	
+	<context:component-scan base-package="com.micarol.stock" />
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.username}"/>
+	    <property name="password" value="${jdbc.password}"/>
+		<property name="maxActive">
+			<value>64</value>
+		</property>
+		<property name="maxIdle">
+			<value>64</value>
+		</property>
+		<property name="maxWait">
+			<value>0</value>
+		</property>	  
+		<property name="validationQuery">
+			<value>select 1</value>
+		</property>
+		<property name="testWhileIdle">
+			<value>true</value>
+		</property>	 
+		<property name="minEvictableIdleTimeMillis">
+			<value>20000000</value>
+		</property>	 
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>3600000</value>
+		</property>	   
+	</bean>
+	
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+  		<property name="basePackage" value="com.micarol.stock.dao.mapper" />
+	</bean>
+	
+	<bean id="idGenarater"
+        class="org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer">
+        <property name="incrementerName" value="wk_acct_trans_id_seq"/> 
+        <property name="columnName" value="id"/>
+        <property name="cacheSize" value="10"/> 
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+	<!-- Task 任务 配置 -->
+ 	<task:executor id="myexecutor" pool-size="10" />
+	<task:scheduler id="myscheduler" pool-size="10" />
+	
+	<task:scheduled-tasks>
+        <task:scheduled ref="stockPubNoticeTask" method="pubNoticeSpider" cron="30 31/1 * * * *"/>
+    </task:scheduled-tasks>
+	
+	<import resource="rabbit.xml"/>
+</beans>

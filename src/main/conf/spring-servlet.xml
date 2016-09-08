@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+	
+	<!-- NOTE: this configuration must above the "mvc:annotation-driven"  -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<!-- <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" /> -->
+				<!--bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/-->
+				<bean class = "org.springframework.http.converter.StringHttpMessageConverter">   
+	                <property name = "supportedMediaTypes">
+	                      <list>
+	                          <value>text/plain;charset=UTF-8</value>   
+	                     </list>   
+	                </property>   
+             	</bean>   
+			</list>
+		</property>
+	</bean>
+		
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+		<property name="locations">
+			<list>
+				<value>classpath:core.properties</value>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>  
+	</bean>	
+	
+	<mvc:annotation-driven />
+	<mvc:resources location="/res/" mapping="/res/**" />
+	<context:component-scan base-package="com.micarol.stock" />
+	
+	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="/WEB-INF/velocity" /> 
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">utf-8</prop>    
+            	<prop key="output.encoding">utf-8</prop>  
+				<prop key="file.resource.loader.cache">false</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="cache" value="true"/>
+		<property name="prefix" value=""/>
+		<property name="suffix" value=".vm"/>
+		<property name="contentType" value="text/html; charset=utf-8" />
+		<property name="exposeRequestAttributes" value="true" /> 
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="dateToolAttribute" value="dateTool"/>
+		<property name="numberToolAttribute" value="numberTool"/>  
+	</bean>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+	 
+	<bean id="web.direct.view" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+	
+	<bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/**/*.html">web.direct.view</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+	        <property name="defaultLocale" value="zh_CN" />
+	</bean>
+
+</beans>
