@@ -6,26 +6,36 @@
 	    <result column="code" property="code"  />
 	    <result column="name" property="name"  />
 	</resultMap>
+	
+	<resultMap type="com.micarol.stock.pojo.StockAlarmSetting" id="settingMap">
+		<result column="id" property="id"  />
+		<result column="user_id" property="userid"  />
+		<result column="code" property="code"  />
+		<result column="keyword" property="keyword"  />
+		<result column="email" property="email"  />
+		<result column="notice" property="notice"  />
+		<result column="create_time" property="createTime"  />
+	</resultMap>
 
 	<select id="allCodesForPubNotice" resultMap="codeMap">
 		select 
-			sc.code code, ifnull(temp.date, '2016-01-01') date
+			sc.code code, ifnull(temp.date, '2017-01-01') date
 		from 
 			stock_code sc 
 		left join 
 			(select sn.code, max(sn.date) as date from stock_notice sn group by sn.code) temp 
 		on 
-			sc.code=temp.code;
+			sc.code=temp.code
 	</select>	  
 	
 	<insert id="insertUpdatePubNotice">
 		insert into 
 			stock_notice 
-		(code, title, link, date, post_time) 
+		(uni_key, code, title, link, date, post_time) 
 		values 
 		<foreach collection="list" item="item" separator=",">
 			(
-			#{item.code}, #{item.title}, #{item.link}, #{item.date}, now()
+			#{item.uniKey}, #{item.code}, #{item.title}, #{item.link}, #{item.date}, now()
 			)
 		</foreach>
 		on duplicate key update 
@@ -34,19 +44,37 @@
 	
 	<insert id="addStockAlarmSetting" keyProperty="id">
 		insert into 
-			alarm_setting
-		(user_id, stock_code, keyword, notice, create_time) 
+			stock_alarm_setting
+		(user_id, code, keyword, notice, create_time) 
 		values 
 		(#{setting.userid}, #{setting.code}, #{setting.keyword}, #{setting.notice}, #{setting.createTime})
 	</insert>
 	
 	<insert id="backupStockAlarmSetting">
 		insert into 
-			alarm_setting_del
-		select * from alarm_setting where id=${id}
+			stock_alarm_setting_del
+		select * from stock_alarm_setting where id=${id}
 	</insert>
 	
 	<delete id="delStockAlarmSetting">
-		delete from alarm_setting where user_id=${userid} and id=${id}
+		delete from stock_alarm_setting where user_id=${userid} and id=${id}
 	</delete>
+	
+	<select id="listSettings" resultMap="settingMap">
+		select * from stock_alarm_setting order by code
+	</select>
+	
+	<insert id="insertAlarmRec">
+		insert into 
+			stock_alarm_rec 
+			(alarm_id, code, keyword, uni_key, create_time) 
+		values 
+		<foreach collection="list" item="item" separator=",">
+			(
+			 #{item.alarmid}, #{item.code}, #{item.keyword}, #{item.uniKey}, now()
+			)
+		</foreach>
+		on duplicate key update 
+			post_time = values(post_time)
+	</insert>
 </mapper>

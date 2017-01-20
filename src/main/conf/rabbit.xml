@@ -1,18 +1,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:rabbit="http://www.springframework.org/schema/rabbit"
-       xsi:schemaLocation="http://www.springframework.org/schema/rabbit
-                           http://www.springframework.org/schema/rabbit/spring-rabbit-1.1.xsd
-                           http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-
-    <rabbit:connection-factory id="rabbitConnectionFactory"/>
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+       					    http://www.springframework.org/schema/rabbit
+                           http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+                           
     <bean id="rabbitConnectionFactory"
           class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
-        <!-- <constructor-arg value="${rabbit.host}"/> -->
-        <property name="host" value="${rabbit.host}"/>
+        <constructor-arg value="${rabbit.host}"/>
         <property name="username" value="${rabbit.username}"/>
         <property name="password" value="${rabbit.password}"/>
+        <property name="virtualHost" value="${rabbit.vhost}"/>
     </bean>
     <rabbit:template id="rabbitTemplate" connection-factory="rabbitConnectionFactory" message-converter="converter"/>
     <rabbit:admin connection-factory="rabbitConnectionFactory"/>
@@ -20,4 +21,10 @@
         <property name="defaultCharset" value="UTF-8"/>
     </bean>
     
+    <rabbit:queue id="stockAlarmQueue" name="stock.notice.keyword.alarm" durable="true" />
+    <rabbit:queue id="stockMailQueue" name="stock.notice.mail" durable="true" />
+    
+    <rabbit:listener-container acknowledge="none" connection-factory="rabbitConnectionFactory" concurrency="1">
+        <rabbit:listener queues="stockMailQueue" ref="stockMailListener" method="mailQueueOut"/>
+    </rabbit:listener-container>
 </beans>

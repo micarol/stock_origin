@@ -3,20 +3,24 @@ package com.micarol.stock.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.micarol.stock.util.JsonUtil;
+
 public class StockAlarmSetting implements Serializable {
 
 	private static final long serialVersionUID = 3785337596079327472L;
 	
-	private long id;
+	private int id;
 	private int userid;
 	private String code;
 	private String keyword;
+	private String email;
 	private int notice;
 	private Date createTime;
-	public long getId() {
+	
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public int getUserid() {
@@ -37,6 +41,12 @@ public class StockAlarmSetting implements Serializable {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public int getNotice() {
 		return notice;
 	}
@@ -50,6 +60,9 @@ public class StockAlarmSetting implements Serializable {
 		this.createTime = createTime;
 	}
 	
-	
+	@Override
+	public String toString(){
+		return JsonUtil.obj2JsonStr(this);
+	}
 	
 }

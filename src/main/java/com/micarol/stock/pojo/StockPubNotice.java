@@ -3,11 +3,14 @@ package com.micarol.stock.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.micarol.stock.util.JsonUtil;
+
 public class StockPubNotice implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private long id;
+	private String uniKey;
 	private String code;
 	private String title;
 	private String link;
@@ -19,6 +22,12 @@ public class StockPubNotice implements Serializable {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public String getUniKey() {
+		return uniKey;
+	}
+	public void setUniKey(String uniKey) {
+		this.uniKey = uniKey;
 	}
 	public String getCode() {
 		return code;
@@ -51,4 +60,15 @@ public class StockPubNotice implements Serializable {
 		this.postTime = postTime;
 	}
 	
+	@Override
+	public String toString(){
+		return JsonUtil.obj2JsonStr(this);
+	}
+	
+	
+	public static void main(String[] args) {
+		String str = "aaa#notify#bbb";
+		String[] arr = str.split("#notify#");
+		System.out.println("len:"+arr.length);
+	}
 }

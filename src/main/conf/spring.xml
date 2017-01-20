@@ -28,8 +28,8 @@
 	</bean>
 
 	<aop:aspectj-autoproxy />
-	<context:annotation-config />
 	
+	<context:annotation-config />
 	<context:component-scan base-package="com.micarol.stock" />
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -88,7 +88,9 @@
 	<task:scheduler id="myscheduler" pool-size="10" />
 	
 	<task:scheduled-tasks>
-        <task:scheduled ref="stockPubNoticeTask" method="pubNoticeSpider" cron="30 31/1 * * * *"/>
+        <task:scheduled ref="stockPubNoticeTask" method="pubNoticeSpider" cron="0 04/30 * * * *"/>
+        <task:scheduled ref="stockPubNoticeTask" method="alarmHandler" cron="0 05/10 * * * *"/>
+        <task:scheduled ref="stockPubNoticeTask" method="testQueue" cron="0 48/10 * * * *"/>
     </task:scheduled-tasks>
 	
 	<import resource="rabbit.xml"/>

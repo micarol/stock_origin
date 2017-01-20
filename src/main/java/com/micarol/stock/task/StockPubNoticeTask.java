@@ -13,11 +13,28 @@ public class StockPubNoticeTask {
 	@Autowired
 	private StockService stockService;
 	
-//	@Scheduled(cron="0 44/1 11  * * *")
+	/**
+	 * 公告爬虫
+	 */
 	public void pubNoticeSpider() {
 		long s = System.currentTimeMillis();
 		Loggers.RUNNING_LOG.info("pubNoticeSpider start");
 		stockService.pubNoticeSpider();
 		Loggers.RUNNING_LOG.info("pubNoticeSpider over, using {}ms", System.currentTimeMillis()-s);
 	}
+	
+	/**
+	 * 监控处理
+	 */
+	public void alarmHandler() {
+		long s = System.currentTimeMillis();
+		Loggers.RUNNING_LOG.info("alarmHandler start");
+		stockService.alarmHander();
+		Loggers.RUNNING_LOG.info("alarmHandler over, using {}ms", System.currentTimeMillis()-s);
+	}
+	
+	public void testQueue() {
+		stockService.testQueue();
+	}
+	
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.micarol.stock.pojo.StockPubNotice;
 import com.micarol.stock.util.Loggers;
+import com.micarol.stock.util.StringUtil;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
@@ -49,9 +50,11 @@ public class EastMoneySpider implements PageProcessor {
 				int d = Integer.parseInt(pubDate.replace("-", ""));
 				if(d >= fromDate) {
 					StockPubNotice notice = new StockPubNotice();
+					String title = selectable.$("a", "text").get();
+					notice.setUniKey(StringUtil.getMD5(code+title+pubDate));
 					notice.setCode(code);
 					notice.setDate(pubDate);
-					notice.setTitle(selectable.$("a", "text").get());
+					notice.setTitle(title);
 					notice.setLink(selectable.links().get());
 					list.add(notice);
 				}

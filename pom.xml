@@ -25,9 +25,10 @@
 				<!-- dev env -->
 			<!-- 	<runtime.env>src/main/env/dev</runtime.env> -->
 				<!-- RabbitMQ -->
-				<config.rabbit.host>10.0.0.11</config.rabbit.host>
-				<config.rabbit.username>guest</config.rabbit.username>
-				<config.rabbit.password>guest</config.rabbit.password>
+				<config.rabbit.host>139.196.96.156</config.rabbit.host>
+				<config.rabbit.username>rabbit_monitor</config.rabbit.username>
+				<config.rabbit.password>123457</config.rabbit.password>
+				<config.rabbit.vhost>/</config.rabbit.vhost>
 				
 				<!-- Redis -->
 				<config.redis.host>10.0.0.11</config.redis.host>
@@ -53,8 +54,9 @@
 
 				<!-- RabbitMQ -->
 				<config.rabbit.host>127.0.0.1</config.rabbit.host>
-				<config.rabbit.username>micarol</config.rabbit.username>
+				<config.rabbit.username>rabbit_monitor</config.rabbit.username>
 				<config.rabbit.password>123457</config.rabbit.password>
+				<config.rabbit.vhost>/</config.rabbit.vhost>
 				
 				<!-- Redis -->
 				<config.redis.host>10.0.0.40</config.redis.host>
@@ -230,12 +232,12 @@
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-amqp</artifactId>
-			<version>1.6.0.RELEASE</version>
+			<version>1.6.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit</artifactId>
-			<version>1.6.0.RELEASE</version>
+			<version>1.6.1.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
@@ -251,7 +253,7 @@
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
-			<version>1.4.4</version>
+			<version>1.4.7</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
