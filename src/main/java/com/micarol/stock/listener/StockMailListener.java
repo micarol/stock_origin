@@ -37,7 +37,7 @@ public class StockMailListener {
 				String subject = "[" + setting.getCode() + "]提醒, 关键词:["+setting.getKeyword()+"]";
 				String body = "标题:"+notice.getTitle()+"\n链接:"+notice.getLink()+"\n日期:"+notice.getDate().toString();
 				SendMail.qqMailSend(setting.getEmail(), subject, body, null);
-				LocalCache.putValue(Constants.CACHE_MAIL+notice.getUniKey(), 1, 86400);
+				LocalCache.putValue(Constants.CACHE_MAIL+notice.getUniKey(), 1, 86400*30);
 				Thread.sleep(10000);
 			} else {
 				Loggers.ERROR_LOG.error("queue msg format error.msg: {}", message);

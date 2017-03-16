@@ -3,6 +3,8 @@ package com.micarol.stock.util;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -13,6 +15,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.codehaus.jackson.JsonNode;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -179,9 +182,21 @@ public class SendMail {
         transport.close();
     }
 	
+	public static String mailJsonStr(String from, String to, String subject, String text) {
+		Map<String, String> map = new HashMap<>();
+		map.put("from", from);
+		map.put("to", to);
+		map.put("subject", subject);
+		map.put("body", text);
+		return JsonUtil.obj2JsonStr(map).toString();
+	}
+	
 	public static void main(String[] args) throws Exception {
 		String subject = "600303提醒,关键词:[股东大会决议公告]";
 		String body = "标题:600303:曙光股份2016年11月产销数据快报\n链接:http://data.eastmoney.com/notice/20161207/2Wvl2cbDS7pGaz.html 日期:2016-12-07";
-		SendMail.qqMailSend("49134598@qq.com", subject, body, "fromQQTest");
+//		SendMail.qqMailSend("49134598@qq.com", subject, body, "fromQQTest");
+		String str = SendMail.mailJsonStr("49134598@qq.com", "49134598@qq.com", "test", body);
+		JsonNode json = JsonUtil.readTree(str);
+		System.out.println(json.toString());
 	}
 }

@@ -23,8 +23,13 @@
     
     <rabbit:queue id="stockAlarmQueue" name="stock.notice.keyword.alarm" durable="true" />
     <rabbit:queue id="stockMailQueue" name="stock.notice.mail" durable="true" />
+    <rabbit:queue id="emailQueue" name="stock.common.mail" durable="true" />
     
     <rabbit:listener-container acknowledge="none" connection-factory="rabbitConnectionFactory" concurrency="1">
         <rabbit:listener queues="stockMailQueue" ref="stockMailListener" method="mailQueueOut"/>
+    </rabbit:listener-container>
+    
+    <rabbit:listener-container acknowledge="none" connection-factory="rabbitConnectionFactory" concurrency="1">
+        <rabbit:listener queues="emailQueue" ref="mailListener" method="sendMail" />
     </rabbit:listener-container>
 </beans>

@@ -92,6 +92,11 @@
         <task:scheduled ref="stockPubNoticeTask" method="alarmHandler" cron="0 05/10 * * * *"/>
         <task:scheduled ref="stockPubNoticeTask" method="testQueue" cron="0 48/10 * * * *"/>
     </task:scheduled-tasks>
+    
+    <task:scheduled-tasks>
+        <task:scheduled ref="weiboMonitorTask" method="weiboQuestion" cron="0 13/15 17 * * *"/>
+    </task:scheduled-tasks>
+	
 	
 	<import resource="rabbit.xml"/>
 </beans>
