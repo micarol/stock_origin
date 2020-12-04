@@ -6,13 +6,14 @@ name: Java CI with Maven
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   test:
     name: 'hello world'
     runs-on: ubuntu-latest
 
-    -  name: step1
+  steps:
+    - name: 'Checkout codes'
+      uses: actions/checkout@v1  
+    - name: step1
       uses: com/micarol/Test@master
