@@ -16,5 +16,4 @@ jobs:
 
     steps:
       name: step1
-      run:  main
       uses: com/micarol/Test@master
