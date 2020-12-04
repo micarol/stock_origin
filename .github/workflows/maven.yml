@@ -7,10 +7,8 @@ on:
   push:
     branches: [ master ]
 
-jobs:
-  test:
-    name: 'hello world'
-    runs-on: ubuntu-latest
+jobs: 
+  runs-on: ubuntu-latest
 
   steps:
     - name: 'Checkout codes'
