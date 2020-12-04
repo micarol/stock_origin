@@ -74,9 +74,9 @@ public class EastMoneySpider implements PageProcessor {
 	
 	public static void main(String[] args) {
 //		System.out.println(new String("\u4e16\u8363\u5146\u4e1a\uff1a\u7b2c\u516d\u5c4a\u8463\u4e8b\u4f1a\u7b2c\u4e03\u6b21\u4f1a\u8bae\u51b3\u8bae\u516c\u544a"));
-		EastMoneySpider spider = new EastMoneySpider();
-		List<StockPubNotice> list = spider.getPubNoticeList("http://data.eastmoney.com/notice/002292.html", "002292", 20160729);
-		System.out.println(list!=null?list.toString():"");
+//		EastMoneySpider spider = new EastMoneySpider();
+//		List<StockPubNotice> list = spider.getPubNoticeList("http://data.eastmoney.com/notice/002292.html", "002292", 20160729);
+//		System.out.println(list!=null?list.toString():"");
 		//qq,http://news.gtimg.cn/notice_more.php?q=sz002292&page=1
 	}
 }

@@ -2,6 +2,7 @@ package com.micarol.stock.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -11,7 +12,11 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.micarol.stock.constants.Constants;
+import com.micarol.stock.pojo.CacheConstants;
 import com.micarol.stock.service.cache.LocalCache;
 import com.micarol.stock.service.rabbitmq.RabbitMQService;
 import com.micarol.stock.util.JsonUtil;
@@ -31,6 +36,15 @@ public class WeiboMonitorService {
 	private static List<String> listIds;
 	private String token = "2.0035_eWDnYTUdCfe51e29f84dIN2NE";
 	private String myMail = "49134598@qq.com";
+	
+	public static LoadingCache<String, String> cache = CacheBuilder.newBuilder().maximumSize(100000l).expireAfterWrite(30, TimeUnit.DAYS)
+			.build(new CacheLoader<String, String>(){
+				@Override
+				public String load(String key) throws Exception {
+					return null;
+				}
+				
+			});
 	
 	static {
 		keywords = new ArrayList<>();
@@ -59,11 +73,11 @@ public class WeiboMonitorService {
 								for (String keyword : keywords) {
 									if(status.get("text").asText().contains(keyword)) {
 										String screenName = status.get("user").get("screen_name").asText();
-										Object o = LocalCache.getValue(Constants.CACHE_SCREEN_NAME+screenName);
+										String o = cache.get(CacheConstants.CACHE_SCREEN_NAME+screenName);
 										if(null != o) {
 											String body = "@"+screenName+" match keyword "+keyword;
 											queueService.putMessage(emailQueue, SendMail.mailJsonStr("micarol", myMail, "["+keyword+"]提醒", body));
-											LocalCache.putValue(Constants.CACHE_SCREEN_NAME+screenName, 1, 86400*30);
+											cache.put(CacheConstants.CACHE_SCREEN_NAME+screenName, "1");
 										}
 									}
 								}

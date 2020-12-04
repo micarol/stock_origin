@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.micarol.stock.constants.Constants;
 import com.micarol.stock.dao.mapper.StockMapper;
+import com.micarol.stock.pojo.CacheConstants;
 import com.micarol.stock.pojo.StockAlarmRec;
 import com.micarol.stock.pojo.StockAlarmSetting;
 import com.micarol.stock.pojo.StockPubNotice;
@@ -179,7 +180,7 @@ public class StockService {
 				List<StockPubNotice> notices = entry.getValue();
 				StockAlarmSetting setting = entry.getKey();
 				for (StockPubNotice notice : notices) {
-					Object o = LocalCache.getValue(Constants.CACHE_MAIL+notice.getUniKey());
+					Object o = LocalCache.getValue(CacheConstants.CACHE_MAIL+notice.getUniKey());
 					if(setting.getNotice()==1 && null==o) {// TODO: @micarol 去除重复提醒
 						rec = new StockAlarmRec();
 						rec.setAlarmid(setting.getId());

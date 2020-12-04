@@ -21,7 +21,7 @@ public class CommandExecutor {
 	
 	public static String execute(String command) {
 		StringBuilder sb = new StringBuilder();
-		String[] commands = new String[] { "/bin/sh", "-c", command };
+		String[] commands = new String[] { "/bin/bash", "-c", command};
 		try {
 			Process proc = new ProcessBuilder(commands).start();
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(
@@ -35,28 +35,23 @@ public class CommandExecutor {
 				sb.append(s);
 				sb.append("\n");
 			}
-
+			
 			while ((s = stdError.readLine()) != null) {
 				sb.append(s);
 				sb.append("\n");
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Execute Command: command={}, result={}", command, sb.toString());
+			logger.error(e.getMessage(), e);
 		}
-		logger.info("Execute Command: command={}, result={}", command, sb.toString());
 		return sb.toString();
 	}
 	
-	public static void main(String[] avgs) {
-		File dir = new File("/Users/micarol/logs/keyword_log_1");
-		if(dir.isDirectory()){
-			File[] files = dir.listFiles();
-			for(int i=0;i<files.length;i++){
-				File file = files[i];
-				System.out.println(file.getPath());
-				String  result = CommandExecutor.execute("rm "+file.getPath());
-			}
-		}	
+	public static void main(String[] avgs) throws Exception {
+		File file = new File("/Users/micarol/Documents/tmp/uid.txt");
+		System.out.println(file.getPath());
+		String  result = CommandExecutor.execute("md5 "+file.getPath());
+		System.out.println(result);
 	}
 
 }

@@ -94,6 +94,13 @@
     </pluginRepositories> -->
 	
 	<dependencies>
+		<!-- my project -->
+		<dependency>
+			<groupId>com.micarol</groupId>
+			<artifactId>micarol.util</artifactId>
+			<version>1.0</version>
+		</dependency>
+	
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -128,6 +135,12 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools</artifactId>
 			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-digester3</artifactId>
+			<version>3.2</version>
+			<classifier>with-deps</classifier>
 		</dependency>		
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -260,6 +273,17 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>2.5.0</version>
+		</dependency>
 		<!-- <dependency>
 			<groupId>com.google.code.simple-spring-memcached</groupId>
 			<artifactId>spymemcached</artifactId>
@@ -298,6 +322,12 @@
 		    <artifactId>webmagic-extension</artifactId>
 		    <version>${webmagic.version}</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>21.0</version>
+        </dependency>
 	</dependencies>
 	
   <build>
