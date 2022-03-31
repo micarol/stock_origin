@@ -8,7 +8,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<spring.version>4.3.2.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<jedis.version>2.6.2</jedis.version>
 		<spring.data.redis.version>1.6.4.RELEASE</spring.data.redis.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
